@@ -1,0 +1,16 @@
+[
+  {
+    "title": "Access Controls Policy",
+    "content": "# Access Controls Policy\n\n## 1.0 Purpose\nThis policy establishes guidelines for access controls to ensure the security, integrity, and availability of company systems and data.\n\n## 2.0 Scope\nThis policy applies to all employees, contractors, and third parties accessing company systems.\n\n## 3.0 Policy Statements\n\n### 3.1 General Requirements\n- All access controls activities must be documented and approved\n- Regular reviews must be conducted to ensure compliance\n- Exceptions require formal approval from management\n\n### 3.2 Technical Controls\n- AWS: Appropriate security configurations must be maintained\n- Okta: Appropriate security configurations must be maintained\n- Jira: Appropriate security configurations must be maintained\n\n\n## 4.0 Roles and Responsibilities\n- **System Owners**: Responsible for implementing controls\n- **Security Team**: Responsible for monitoring compliance\n- **Management**: Responsible for policy approval and exceptions\n\n## 5.0 Review Cycle\nThis policy shall be reviewed annually or when significant changes occur.",
+    "type": "policy",
+    "control_id": "ACC-001",
+    "id": "policy_001"
+  },
+  {
+    "title": "Access Controls Procedure",
+    "content": "# Access Controls Procedure\n\n## 1.0 Overview\nThis procedure outlines the steps for implementing and maintaining access controls controls.\n\n## 2.0 Procedure Steps\n\n### 2.1 Initial Setup\n1. Review the Access Controls Policy requirements\n2. Identify systems and applications in scope\n3. Document current state and gaps\n\n### 2.2 Implementation\n1. Configure technical controls as specified\n2. Document configuration settings\n3. Test controls to ensure proper functionality\n\n### 2.3 Ongoing Maintenance\n1. Conduct regular reviews (quarterly recommended)\n2. Update documentation for any changes\n3. Report any issues or exceptions\n\n## 3.0 Evidence Requirements\n- Configuration documentation\n- Review meeting minutes\n- Testing results\n- Exception documentation\n\n## 4.0 Related Documents\n- Access Controls Policy\n- Risk Assessment Framework\n- Incident Response Plan",
+    "type": "procedure",
+    "control_id": "ACC-001",
+    "id": "policy_002"
+  }
+]

@@ -1,0 +1,82 @@
+[
+  {
+    "control_id": "CHG-001",
+    "control_area": "Change Management",
+    "control_description": "All production changes require approval",
+    "control_type": "Hybrid",
+    "risk": "Unauthorized changes causing system instability",
+    "risk_rating": "High",
+    "test_of_design": {
+      "steps": [
+        "Review change management policy",
+        "Verify approval workflows"
+      ],
+      "evidence": [
+        "Change management policy",
+        "Approval workflow diagrams"
+      ]
+    },
+    "test_of_effectiveness": {
+      "steps": [
+        "Sample production changes to verify approvals",
+        "Check change tickets"
+      ],
+      "evidence": [
+        "Change tickets",
+        "Approval records"
+      ]
+    },
+    "custom_testing_steps": [
+      {
+        "technology": "Jira",
+        "steps": "Verify all production changes are approved",
+        "automation_artifact": {
+          "type": "JQL",
+          "description": "Find Jira tickets moved to Done without approval",
+          "snippet": "project = PROD AND status = Done AND approvals != Approved"
+        }
+      }
+    ],
+    "status": "Not Started"
+  },
+  {
+    "control_id": "ACC-001",
+    "control_area": "Access Management",
+    "control_description": "User access reviews are performed quarterly",
+    "control_type": "Manual",
+    "risk": "Unauthorized access to systems and data",
+    "risk_rating": "High",
+    "test_of_design": {
+      "steps": [
+        "Review access review procedures",
+        "Verify quarterly review schedule"
+      ],
+      "evidence": [
+        "Access review policy",
+        "Review meeting minutes"
+      ]
+    },
+    "test_of_effectiveness": {
+      "steps": [
+        "Sample user accounts to verify reviews occurred",
+        "Check timestamps of last reviews"
+      ],
+      "evidence": [
+        "User access reports",
+        "Review documentation"
+      ]
+    },
+    "custom_testing_steps": [
+      {
+        "technology": "AWS IAM",
+        "steps": "Verify IAM password policy requirements",
+        "automation_artifact": {
+          "type": "AWS CLI",
+          "description": "Check IAM password policy configuration",
+          "snippet": "aws iam get-account-password-policy"
+        }
+      }
+    ],
+    "status": "In Progress"
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "control_id": "ACC-001",
+    "control_area": "Access Controls",
+    "control_description": "Unique user identification for accessing ePHI",
+    "control_type": "Automatic",
+    "risk": "Unauthorized access to protected health information",
+    "risk_rating": "High",
+    "test_of_design": {
+      "steps": [
+        "Review user account policies",
+        "Verify unique user IDs are required"
+      ],
+      "evidence": [
+        "Security policy",
+        "System configuration"
+      ]
+    },
+    "test_of_effectiveness": {
+      "steps": [
+        "Test login with shared credentials",
+        "Verify audit logs show individual users"
+      ],
+      "evidence": [
+        "Login attempts",
+        "Audit logs"
+      ]
+    },
+    "custom_testing_steps": [
+      {
+        "technology": "AWS IAM",
+        "steps": "Verify IAM password policy requirements",
+        "automation_artifact": {
+          "type": "AWS CLI",
+          "description": "Check IAM password policy configuration",
+          "snippet": "aws iam get-account-password-policy"
+        }
+      }
+    ],
+    "status": "Not Started"
+  }
+]

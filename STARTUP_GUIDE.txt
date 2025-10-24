@@ -1,0 +1,33 @@
+=== COMPLIANCE PLATFORM - FREE VERSION ===
+SUCCESSFULLY FIXED DEPENDENCY ISSUES!
+
+WHAT WAS CHANGED:
+✅ Removed pandas (caused build errors) 
+✅ Removed OpenAI/Gemini API dependencies
+✅ Added Free AI Service with templates
+✅ Simplified requirements.txt
+
+HOW TO START:
+1. Navigate to: C:\compliance-platform-opensource
+2. Run: python local_server.py
+3. Open: http://localhost:8000
+
+FEATURES AVAILABLE:
+• 5 Compliance Frameworks (SOC 2, HIPAA, NIST, PCI DSS, ISO 27001)
+• AI-generated audit plans (using free templates)
+• Policy document generation
+• Export to PDF/Excel
+• User management
+• Evidence upload
+
+FREE AI OPTIONS FOR ENHANCEMENT:
+1. Install Ollama locally for true AI:
+   - Download: https://ollama.ai/
+   - Run: ollama pull llama2
+   - AI Service will auto-detect
+
+2. Use Hugging Face free tier:
+   - pip install huggingface_hub
+   - Get token: https://huggingface.co/settings/tokens
+
+NO API KEYS REQUIRED - Ready to use!
