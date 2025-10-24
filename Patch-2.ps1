@@ -1,5 +1,5 @@
 # Compliance Platform Patch-2: Advanced Features + GitHub Integration
-# COMPLETE WORKING VERSION - No parsing errors
+# FIXED VERSION - Handles missing directories and replacement errors
 # Run from: C:\compliance-platform-opensource\
 
 Write-Host "=== COMPLIANCE PLATFORM PATCH-2 DEPLOYMENT ===" -ForegroundColor Green
@@ -25,14 +25,26 @@ if (-not (Test-Path ".git")) {
     git remote add origin $REPO_URL
 }
 
-# Step 2: Backup
-Write-Host "`n2. CREATING BACKUP..." -ForegroundColor Cyan
+# Step 2: Backup and create directories
+Write-Host "`n2. CREATING BACKUP AND DIRECTORIES..." -ForegroundColor Cyan
 New-Item -ItemType Directory -Path $BACKUP_DIR -Force | Out-Null
 Copy-Item "$PROJECT_ROOT\*" $BACKUP_DIR -Recurse -Force -ErrorAction SilentlyContinue
+
+# Create required directories
+$directories = @("services", "js", "uploads", "uploads/evidence", "exports", "data")
+foreach ($dir in $directories) {
+    $fullPath = "$PROJECT_ROOT\$dir"
+    if (-not (Test-Path $fullPath)) {
+        New-Item -ItemType Directory -Path $fullPath -Force | Out-Null
+        Write-Host "Created directory: $dir" -ForegroundColor Green
+    }
+}
+
 Write-Host "Backup created: $BACKUP_DIR" -ForegroundColor Green
 
 # Step 3: Create Evidence Manager
 Write-Host "`n3. CREATING EVIDENCE MANAGER..." -ForegroundColor Cyan
+
 $evidenceManager = @"
 import os
 import json
@@ -107,11 +119,13 @@ class EvidenceManager:
             "pending_evidence": pending_evidence, "approval_rate": (approved_evidence / total_evidence * 100) if total_evidence > 0 else 0
         }
 "@
+
 Set-Content -Path "$PROJECT_ROOT\services\evidence_manager.py" -Value $evidenceManager
 Write-Host "Evidence Manager created" -ForegroundColor Green
 
 # Step 4: Create Analytics Service
 Write-Host "`n4. CREATING ANALYTICS SERVICE..." -ForegroundColor Cyan
+
 $analyticsService = @"
 import json
 import os
@@ -181,19 +195,29 @@ class AnalyticsService:
             "implemented": [data["implemented"] for data in sorted_timeline.values()]
         }
 "@
+
 Set-Content -Path "$PROJECT_ROOT\services\analytics_service.py" -Value $analyticsService
 Write-Host "Analytics Service created" -ForegroundColor Green
 
 # Step 5: Update server endpoints
 Write-Host "`n5. UPDATING SERVER ENDPOINTS..." -ForegroundColor Cyan
-$serverContent = Get-Content "$PROJECT_ROOT\local_server.py" -Raw
-if (-not ($serverContent -like "*from services.evidence_manager*")) {
-    $serverContent = $serverContent -replace "from services.ai_service import AIService", "from services.ai_service import AIService`nfrom services.evidence_manager import EvidenceManager`nfrom services.analytics_service import AnalyticsService"
-}
-if (-not ($serverContent -like "*evidence_manager = EvidenceManager*")) {
-    $serverContent = $serverContent -replace "ai_service = AIService()", "ai_service = AIService()`nevidence_manager = EvidenceManager()`nanalytics_service = AnalyticsService()"
-}
-$newEndpoints = @"
+
+# Read the server file safely
+if (Test-Path "$PROJECT_ROOT\local_server.py") {
+    $serverContent = Get-Content "$PROJECT_ROOT\local_server.py" -Raw
+    
+    # Add imports if not present
+    if (-not ($serverContent -like "*from services.evidence_manager*")) {
+        $serverContent = $serverContent -replace "from services.ai_service import AIService", "from services.ai_service import AIService`nfrom services.evidence_manager import EvidenceManager`nfrom services.analytics_service import AnalyticsService"
+    }
+    
+    # Add service initialization if not present
+    if (-not ($serverContent -like "*evidence_manager = EvidenceManager*")) {
+        $serverContent = $serverContent -replace "ai_service = AIService()", "ai_service = AIService()`nevidence_manager = EvidenceManager()`nanalytics_service = AnalyticsService()"
+    }
+    
+    # Add new endpoints
+    $newEndpoints = @"
 
 # Evidence Management Endpoints
 @app.route('/api/evidence/upload', methods=['POST'])
@@ -261,11 +285,17 @@ def filter_controls():
         filtered_controls = [c for c in filtered_controls if search_term in c.get('name', '').lower() or search_term in c.get('description', '').lower()]
     return jsonify(filtered_controls)
 "@
-if (-not ($serverContent -like "*@app.route('/api/evidence/upload'*")) {
-    $serverContent = $serverContent -replace "if __name__ == '__main__':", "$newEndpoints`n`nif __name__ == '__main__':"
+
+    # Insert endpoints only if not already present
+    if (-not ($serverContent -like "*@app.route('/api/evidence/upload'*")) {
+        $serverContent = $serverContent -replace "if __name__ == '__main__':", "$newEndpoints`n`nif __name__ == '__main__':"
+    }
+    
+    Set-Content -Path "$PROJECT_ROOT\local_server.py" -Value $serverContent
+    Write-Host "Server endpoints updated" -ForegroundColor Green
+} else {
+    Write-Host "ERROR: local_server.py not found!" -ForegroundColor Red
 }
-Set-Content -Path "$PROJECT_ROOT\local_server.py" -Value $serverContent
-Write-Host "Server endpoints updated" -ForegroundColor Green
 
 # Step 6: Create JavaScript files
 Write-Host "`n6. CREATING JAVASCRIPT COMPONENTS..." -ForegroundColor Cyan
@@ -352,6 +382,7 @@ class AdvancedFilters {
 }
 const advancedFilters = new AdvancedFilters();
 "@
+
 Set-Content -Path "$PROJECT_ROOT\js\advanced-filters.js" -Value $advancedFiltersJS
 Write-Host "Advanced Filters created" -ForegroundColor Green
 
@@ -429,16 +460,23 @@ document.addEventListener('DOMContentLoaded', () => {
     window.dashboardCharts = new DashboardCharts();
 });
 "@
+
 Set-Content -Path "$PROJECT_ROOT\js\dashboard-charts.js" -Value $dashboardChartsJS
 Write-Host "Dashboard Charts created" -ForegroundColor Green
 
-# Step 7: Update index.html
+# Step 7: Update index.html - FIXED VERSION
 Write-Host "`n7. UPDATING INDEX.HTML..." -ForegroundColor Cyan
-$indexContent = Get-Content "$PROJECT_ROOT\index.html" -Raw
-if (-not ($indexContent -like "*advanced-filters.js*")) {
-    $indexContent = $indexContent -replace "<!-- Existing scripts -->", "<!-- Existing scripts -->" + [Environment]::NewLine + "    <script src=`"js/advanced-filters.js`"></script>" + [Environment]::NewLine + "    <script src=`"js/dashboard-charts.js`"></script>"
-}
-if (-not ($indexContent -like "*id=`"analyticsTab`"*")) {
+
+if (Test-Path "$PROJECT_ROOT\index.html") {
+    $indexContent = Get-Content "$PROJECT_ROOT\index.html" -Raw
+    
+    # Add script imports using simple replacement
+    $scriptImports = "    <script src=`"js/advanced-filters.js`"></script>`n    <script src=`"js/dashboard-charts.js`"></script>"
+    if (-not ($indexContent -like "*advanced-filters.js*")) {
+        $indexContent = $indexContent.Replace("<!-- Existing scripts -->", "<!-- Existing scripts -->`n$scriptImports")
+    }
+    
+    # Add analytics tab HTML
     $analyticsHTML = @"
 <!-- Analytics Dashboard Tab -->
 <div id="analyticsTab" class="hidden tab-content">
@@ -455,13 +493,21 @@ if (-not ($indexContent -like "*id=`"analyticsTab`"*")) {
     </div>
 </div>
 "@
-    $indexContent = $indexContent -replace "<!-- Control Details Tab -->", "$analyticsHTML" + [Environment]::NewLine + [Environment]::NewLine + "<!-- Control Details Tab -->"
+
+    # Add analytics tab to navigation and content
+    if (-not ($indexContent -like "*id=`"analyticsTab`"*")) {
+        # Add navigation button
+        $indexContent = $indexContent.Replace("<!-- Navigation tabs -->", "<!-- Navigation tabs -->`n            <button class=`"tab-btn px-4 py-2 text-gray-600 hover:text-blue-600 transition-colors`" data-tab=`"analyticsTab`">Analytics Dashboard</button>")
+        
+        # Add analytics tab content before Control Details Tab
+        $indexContent = $indexContent.Replace("<!-- Control Details Tab -->", "$analyticsHTML`n`n<!-- Control Details Tab -->")
+    }
+    
+    Set-Content -Path "$PROJECT_ROOT\index.html" -Value $indexContent
+    Write-Host "Index.html updated" -ForegroundColor Green
+} else {
+    Write-Host "ERROR: index.html not found!" -ForegroundColor Red
 }
-if (-not ($indexContent -like "*Analytics Dashboard*")) {
-    $indexContent = $indexContent -replace "<!-- Navigation tabs -->", "<!-- Navigation tabs -->" + [Environment]::NewLine + "            <button class=`"tab-btn px-4 py-2 text-gray-600 hover:text-blue-600 transition-colors`" data-tab=`"analyticsTab`">Analytics Dashboard</button>"
-}
-Set-Content -Path "$PROJECT_ROOT\index.html" -Value $indexContent
-Write-Host "Index.html updated" -ForegroundColor Green
 
 # Step 8: Create .gitignore
 Write-Host "`n8. CREATING GITIGNORE..." -ForegroundColor Cyan
@@ -546,26 +592,6 @@ try {
     Write-Host "? GitHub upload failed" -ForegroundColor Red
     Write-Host "Manual: git add . -> git commit -m 'Patch-2' -> git push origin main" -ForegroundColor Yellow
 }
-
-# Step 11: Clean deployment report
-Write-Host "`n11. CREATING DEPLOYMENT REPORT..." -ForegroundColor Cyan
-$patch2Report = "PATCH-2 DEPLOYMENT COMPLETE
-Deployment Time: $(Get-Date)
-Backup Location: $BACKUP_DIR
-
-NEW FEATURES:
-Evidence Management: File upload, evidence tracking, status management
-Advanced Filtering: Multi-criteria filtering, real-time search, saved presets  
-Analytics Dashboard: Compliance scores, risk assessment, timeline charts
-GitHub Integration: Complete project upload, automated commits
-
-NEXT STEPS:
-1. Start: cd '$PROJECT_ROOT' then python local_server.py
-2. Test new features
-3. Verify GitHub repository"
-
-Set-Content -Path "$PROJECT_ROOT\PATCH-2_REPORT.txt" -Value $patch2Report
-Write-Host $patch2Report -ForegroundColor Green
 
 Write-Host "`n=== PATCH-2 DEPLOYMENT COMPLETE ===" -ForegroundColor Green
 Write-Host "All advanced features deployed!" -ForegroundColor Green

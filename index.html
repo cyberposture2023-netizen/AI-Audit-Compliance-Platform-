@@ -267,7 +267,22 @@
                 </div>
             </div>
 
-            <!-- Control Details Tab -->
+            <!-- Analytics Dashboard Tab -->
+<div id="analyticsTab" class="hidden tab-content">
+    <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Compliance Analytics</h2>
+        <p class="text-gray-600">Real-time insights and compliance metrics</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div id="complianceChart"></div>
+        <div id="riskChart"></div>
+    </div>
+    <div class="grid grid-cols-1 gap-6">
+        <div id="timelineChart"></div>
+    </div>
+</div>
+
+<!-- Control Details Tab -->
             <div id="content-control" class="tab-content">
                 <div class="glass-card">
                     <div class="flex items-center justify-between mb-6">
@@ -448,4 +463,5 @@
     <script src="./js/app.js"></script>
 </body>
 </html>
+
 
