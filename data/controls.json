@@ -1,45 +1,5 @@
 [
   {
-    "control_id": "ACC-001",
-    "control_area": "Access Management",
-    "control_description": "User access reviews are performed quarterly",
-    "control_type": "Manual",
-    "risk": "Unauthorized access to systems and data",
-    "risk_rating": "High",
-    "test_of_design": {
-      "steps": [
-        "Review access review procedures",
-        "Verify quarterly review schedule"
-      ],
-      "evidence": [
-        "Access review policy",
-        "Review meeting minutes"
-      ]
-    },
-    "test_of_effectiveness": {
-      "steps": [
-        "Sample user accounts to verify reviews occurred",
-        "Check timestamps of last reviews"
-      ],
-      "evidence": [
-        "User access reports",
-        "Review documentation"
-      ]
-    },
-    "custom_testing_steps": [
-      {
-        "technology": "AWS IAM",
-        "steps": "Verify IAM password policy requirements",
-        "automation_artifact": {
-          "type": "AWS CLI",
-          "description": "Check IAM password policy configuration",
-          "snippet": "aws iam get-account-password-policy"
-        }
-      }
-    ],
-    "status": "Not Started"
-  },
-  {
     "control_id": "CHG-001",
     "control_area": "Change Management",
     "control_description": "All production changes require approval",
@@ -78,5 +38,45 @@
       }
     ],
     "status": "Not Started"
+  },
+  {
+    "control_id": "ACC-001",
+    "control_area": "Access Management",
+    "control_description": "User access reviews are performed quarterly",
+    "control_type": "Manual",
+    "risk": "Unauthorized access to systems and data",
+    "risk_rating": "High",
+    "test_of_design": {
+      "steps": [
+        "Review access review procedures",
+        "Verify quarterly review schedule"
+      ],
+      "evidence": [
+        "Access review policy",
+        "Review meeting minutes"
+      ]
+    },
+    "test_of_effectiveness": {
+      "steps": [
+        "Sample user accounts to verify reviews occurred",
+        "Check timestamps of last reviews"
+      ],
+      "evidence": [
+        "User access reports",
+        "Review documentation"
+      ]
+    },
+    "custom_testing_steps": [
+      {
+        "technology": "AWS IAM",
+        "steps": "Verify IAM password policy requirements",
+        "automation_artifact": {
+          "type": "AWS CLI",
+          "description": "Check IAM password policy configuration",
+          "snippet": "aws iam get-account-password-policy"
+        }
+      }
+    ],
+    "status": "In Progress"
   }
 ]

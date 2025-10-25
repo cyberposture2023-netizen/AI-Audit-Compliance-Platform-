@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Compliance Platform</title>
+    <link href="./css/tailwind.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="nav-glass">
+        <div class="container">
+            <div class="flex items-center justify-between py-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">ComplianceAI</h1>
+                        <p class="text-xs text-gray-500">Audit-Ready Made Simple</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-8">
+        <!-- Tabs Container -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <button id="tab-assessment" class="tab tab-active">
+                    <i class="fas fa-clipboard-list mr-2"></i>Assessment
+                </button>
+                <button id="tab-audit-plan" class="tab tab-inactive">
+                    <i class="fas fa-file-alt mr-2"></i>Audit Plan
+                </button>
+                <button id="tab-dashboard" class="tab tab-inactive">
+                    <i class="fas fa-tachometer-alt mr-2"></i>Controls Dashboard
+                </button>
+                <button id="tab-control" class="tab tab-inactive">
+                    <i class="fas fa-cog mr-2"></i>Control Details
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div id="tab-content">
+            <!-- Assessment Tab -->
+            <div id="content-assessment" class="tab-content active">
+                <div class="glass-card">
+                    <div class="text-center mb-8">
+                        <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-robot text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-3">Generate Your Audit Plan</h2>
+                        <p class="text-lg text-gray-600">Get from 0% to 100% audit-ready in minutes with AI guidance</p>
+                    </div>
+
+                    <form id="audit-form" class="max-w-2xl mx-auto">
+                        <!-- Framework Selection -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-framework mr-2 text-blue-500"></i>Compliance Framework
+                            </label>
+                            <div class="framework-options">
+                                <div class="framework-option card active" data-value="SOC 2 Type 2">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-shield-alt text-blue-600"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-semibold text-gray-900">SOC 2 Type 2</h3>
+                                            <p class="text-sm text-gray-500">Security & Availability</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="framework-option card" data-value="HIPAA">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-hospital text-green-600"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-semibold text-gray-900">HIPAA</h3>
+                                            <p class="text-sm text-gray-500">Healthcare Data</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="framework" name="framework" value="SOC 2 Type 2">
+                        </div>
+
+                        <!-- Industry Selection -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-industry mr-2 text-green-500"></i>Industry
+                            </label>
+                            <select id="industry" name="industry" class="form-select">
+                                <option value="SaaS">SaaS / Technology</option>
+                                <option value="Healthcare">Healthcare</option>
+                                <option value="Fintech">Fintech</option>
+                                <option value="E-commerce">E-commerce</option>
+                            </select>
+                        </div>
+
+                        <!-- Tech Stack Selection -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-server mr-2 text-purple-500"></i>Technology Stack
+                            </label>
+                            <div class="tech-stack-section">
+                                <!-- Cloud -->
+                                <div class="tech-stack-category">
+                                    <h4>?? Cloud & Infrastructure</h4>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" name="techStack" value="AWS">
+                                            <span>AWS</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" name="techStack" value="Azure">
+                                            <span>Azure</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" name="techStack" value="GCP">
+                                            <span>Google Cloud</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Identity -->
+                                <div class="tech-stack-category">
+                                    <h4>?? Identity & Access</h4>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" name="techStack" value="Okta">
+                                            <span>Okta</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" name="techStack" value="Google Workspace">
+                                            <span>Google Workspace</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" name="techStack" value="Azure AD">
+                                            <span>Azure AD</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- DevOps -->
+                                <div class="tech-stack-category">
+                                    <h4>?? DevOps & Tools</h4>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" name="techStack" value="Jira">
+                                            <span>Jira</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" name="techStack" value="GitHub">
+                                            <span>GitHub</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" name="techStack" value="GitLab">
+                                            <span>GitLab</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Generate Button -->
+                        <div class="mt-8">
+                            <button type="submit" class="btn btn-primary w-full py-4 text-lg">
+                                <i class="fas fa-robot mr-2"></i>
+                                Generate AI Audit Plan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Audit Plan Tab -->
+            <div id="content-audit-plan" class="tab-content">
+                <div class="glass-card">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-3">Generated Audit Plan</h2>
+                        <p class="text-lg text-gray-600">Your comprehensive compliance roadmap</p>
+                    </div>
+
+                    <div id="audit-plan-content">
+                        <div class="text-center py-12">
+                            <i class="fas fa-file-alt text-4xl text-gray-300 mb-4"></i>
+                            <h3 class="text-xl font-semibold text-gray-600 mb-2">No Audit Plan Generated</h3>
+                            <p class="text-gray-500">Go to the Assessment tab to generate your audit plan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div id="content-dashboard" class="tab-content">
+                <!-- Compact Stats Row -->
+                <div class="stats-row">
+                    <div class="compact-stat-card stat-total">
+                        <div class="stat-value" id="total-controls">0</div>
+                        <div class="stat-label">Total Controls</div>
+                    </div>
+                    <div class="compact-stat-card stat-high-risk">
+                        <div class="stat-value" id="high-risk-count">0</div>
+                        <div class="stat-label">High Risk</div>
+                    </div>
+                    <div class="compact-stat-card stat-in-progress">
+                        <div class="stat-value" id="inprogress-count">0</div>
+                        <div class="stat-label">In Progress</div>
+                    </div>
+                    <div class="compact-stat-card stat-completed">
+                        <div class="stat-value" id="completed-count">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+
+                <!-- Controls Table -->
+                <div class="glass-card">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+                        <h3 class="text-xl font-bold text-gray-900">Controls List</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <select id="filter-status" class="form-select w-auto">
+                                <option value="">All Status</option>
+                                <option value="Not Started">Not Started</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Pending Review">Pending Review</option>
+                                <option value="Approved">Approved</option>
+                            </select>
+                            <select id="filter-risk" class="form-select w-auto">
+                                <option value="">All Risk</option>
+                                <option value="High">High</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Low">Low</option>
+                            </select>
+                            <input type="text" id="search-controls" placeholder="Search controls..." class="form-input w-48">
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Control ID</th>
+                                    <th>Description</th>
+                                    <th>Status</th>
+                                    <th>Risk</th>
+                                    <th>Type</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="controls-table-body">
+                                <tr>
+                                    <td colspan="6" class="text-center py-8 text-gray-500">
+                                        No controls generated yet. Create an audit plan to get started!
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Dashboard Tab -->
+<div id="analyticsTab" class="hidden tab-content">
+    <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Compliance Analytics</h2>
+        <p class="text-gray-600">Real-time insights and compliance metrics</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div id="complianceChart"></div>
+        <div id="riskChart"></div>
+    </div>
+    <div class="grid grid-cols-1 gap-6">
+        <div id="timelineChart"></div>
+    </div>
+</div>
+
+<!-- Control Details Tab -->
+            <div id="content-control" class="tab-content">
+                <div class="glass-card">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 id="control-view-title" class="text-2xl font-bold text-gray-900">Control Details</h3>
+                            <p id="control-subtitle" class="text-gray-600">Detailed control information and testing procedures</p>
+                        </div>
+                        <button id="back-to-dashboard" class="btn btn-outline">
+                            <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                        <!-- Main Content -->
+                        <div class="xl:col-span-2 space-y-6">
+                            <!-- Control Information Table -->
+                            <div class="card p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-4">Control Information</h4>
+                                <table class="control-table">
+                                    <tr>
+                                        <td style="width: 30%; font-weight: 600; color: #374151;">Control ID</td>
+                                        <td id="control-id">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600; color: #374151;">Control Area</td>
+                                        <td id="control-area">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600; color: #374151;">Control Type</td>
+                                        <td id="control-type">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600; color: #374151;">Risk Rating</td>
+                                        <td id="control-risk-rating">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600; color: #374151;">Description</td>
+                                        <td id="control-description">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600; color: #374151;">Risk Description</td>
+                                        <td id="control-risk">-</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Test of Design -->
+                            <div class="card p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-4">Test of Design</h4>
+                                <div id="test-of-design-content">
+                                    <table class="control-table">
+                                        <tr>
+                                            <td style="width: 30%; font-weight: 600; color: #374151;">Testing Steps</td>
+                                            <td id="test-of-design-steps">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: 600; color: #374151;">Evidence Required</td>
+                                            <td id="test-of-design-evidence">-</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Test of Effectiveness -->
+                            <div class="card p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-4">Test of Effectiveness</h4>
+                                <div id="test-of-effectiveness-content">
+                                    <table class="control-table">
+                                        <tr>
+                                            <td style="width: 30%; font-weight: 600; color: #374151;">Testing Steps</td>
+                                            <td id="test-of-effectiveness-steps">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: 600; color: #374151;">Evidence Required</td>
+                                            <td id="test-of-effectiveness-evidence">-</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Evidence Requirements Table -->
+                            <div class="card p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-4">Evidence Requirements</h4>
+                                <div class="overflow-x-auto">
+                                    <table class="evidence-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Evidence Type</th>
+                                                <th>Description</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="evidence-table-body">
+                                            <tr>
+                                                <td colspan="3" class="text-center text-gray-500 py-4">No evidence requirements defined</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sidebar -->
+                        <div class="space-y-6">
+                            <!-- Workflow -->
+                            <div class="card p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-4">Workflow</h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="form-label">Status</label>
+                                        <select id="control-status" class="form-select">
+                                            <option value="Not Started">Not Started</option>
+                                            <option value="In Progress">In Progress</option>
+                                            <option value="Pending Review">Pending Review</option>
+                                            <option value="Approved">Approved</option>
+                                        </select>
+                                    </div>
+                                    <div id="workflow-buttons">
+                                        <!-- Buttons will be populated -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- AI Helper -->
+                            <div class="card p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-4">AI Helper</h4>
+                                <div class="space-y-3">
+                                    <button id="generate-policy" class="btn btn-primary w-full">
+                                        <i class="fas fa-file-contract mr-2"></i>Generate Policy
+                                    </button>
+                                    <button id="generate-procedure" class="btn btn-success w-full">
+                                        <i class="fas fa-tasks mr-2"></i>Generate Procedure
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="policy-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 id="policy-modal-title" class="text-xl font-bold text-gray-900">Generated Document</h3>
+                    <button id="close-policy-modal" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="mb-4">
+                    <div id="policy-content" contenteditable="true" class="form-textarea min-h-96 font-mono text-sm"></div>
+                </div>
+                <div class="flex justify-end gap-3">
+                    <button id="cancel-policy" class="btn btn-outline">Cancel</button>
+                    <button id="save-policy" class="btn btn-primary">
+                        <i class="fas fa-save mr-2"></i>Save & Publish
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading-spinner" class="modal-overlay">
+        <div class="glass-card p-8">
+            <div class="flex items-center gap-4">
+                <div class="loading-spinner"></div>
+                <div>
+                    <p class="font-semibold text-gray-900">Generating Audit Plan</p>
+                    <p class="text-sm text-gray-600">AI is working...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/app.js"></script>
+</body>
+</html>
+
+
